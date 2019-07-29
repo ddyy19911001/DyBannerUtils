@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.viewpager.widget.ViewPager;
+
 import java.util.List;
 
 import yin.deng.dybannerutils.R;
@@ -18,9 +20,43 @@ public class MyBannerUtils  {
     private static  int SPEED_TIME_OF_ANIMATE = 1000;
     private static MyBannerUtils utils;
     private int paddingBottom=15;
+    private boolean showIndicator=true;
 
     private MyBannerUtils() {
     }
+
+    public void setShowIndicator(boolean showIndicator) {
+        this.showIndicator = showIndicator;
+    }
+
+    public interface OnBannerPageSelectedListener{
+        void onBannerPageSelected(int position);
+    }
+
+    public void setOnPageSelectedListener(MZBannerView view, final OnBannerPageSelectedListener selectedListener){
+        if(view==null){
+            return;
+        }
+        view.addPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(selectedListener!=null){
+                    selectedListener.onBannerPageSelected(position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
 
     public void setPaddingBottom(int paddingBottom) {
         this.paddingBottom = paddingBottom;
@@ -67,7 +103,7 @@ public class MyBannerUtils  {
             mMZBanner.setCanLoop(true);
             mMZBanner.setDelayedTime(DElAY_TIME);
             mMZBanner.setDuration(SPEED_TIME_OF_ANIMATE);
-            mMZBanner.setIndicatorVisible(true);
+            mMZBanner.setIndicatorVisible(showIndicator);
             mMZBanner.setPages(datas, new MZHolderCreator<BannerViewHolder>() {
                 @Override
                 public BannerViewHolder createViewHolder() {
@@ -84,7 +120,7 @@ public class MyBannerUtils  {
         mMZBanner.setCanLoop(true);
         mMZBanner.setDelayedTime(DElAY_TIME);
         mMZBanner.setDuration(SPEED_TIME_OF_ANIMATE);
-        mMZBanner.setIndicatorVisible(true);
+        mMZBanner.setIndicatorVisible(showIndicator);
         mMZBanner.setBannerPageClickListener(listener);
         mMZBanner.setPages(datas, new MZHolderCreator<BannerViewHolder>() {
             @Override
@@ -102,7 +138,7 @@ public class MyBannerUtils  {
         mMZBanner.setCanLoop(true);
         mMZBanner.setDelayedTime(DElAY_TIME);
         mMZBanner.setDuration(SPEED_TIME_OF_ANIMATE);
-        mMZBanner.setIndicatorVisible(true);
+        mMZBanner.setIndicatorVisible(showIndicator);
         mMZBanner.setBannerPageClickListener(listener);
         mMZBanner.setPages(datas, creator);
         mMZBanner.start();
